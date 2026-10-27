@@ -1,0 +1,47 @@
+{
+  "name": "danqing-ai-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "丹青有AI 品牌官网 - 面向高校艺术教育的 AI 作业诊断系统",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "export": "next build",
+    "scan:paintings": "node scripts/scan-paintings.mjs",
+    "cdn:upload": "node scripts/upload-to-cos.mjs",
+    "cdn:upload:force": "node scripts/upload-to-cos.mjs --force",
+    "prebuild": "node scripts/optimize-paintings.mjs && node scripts/scan-paintings.mjs",
+    "deploy": "node deploy-gh-pages.cjs",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "framer-motion": "^11.3.19",
+    "next": "14.2.5",
+    "next-mdx-remote": "^5.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^7.0.0",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.3",
+    "@types/node": "^20.14.12",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^6.0.5",
+    "autoprefixer": "^10.4.19",
+    "cos-nodejs-sdk-v5": "^3.0.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "14.2.5",
+    "jsdom": "^30.0.1",
+    "postcss": "^8.4.40",
+    "sharp": "^0.35.3",
+    "tailwindcss": "^3.4.7",
+    "typescript": "^5.5.4",
+    "vite": "^8.2.0",
+    "vitest": "^4.1.10"
+  }
+}

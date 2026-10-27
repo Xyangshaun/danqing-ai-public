@@ -1,0 +1,286 @@
+// ============================================================
+// 丹青有AI 管理后台 - 全局样式
+// 水墨美学:宣纸背景 + 紧凑布局 + 中文排版优化
+// 严禁 Google Fonts,使用系统字体栈
+// ============================================================
+
+:root {
+  --dq-ink: #1a1a1a;
+  --dq-paper: #faf8f3;
+  --dq-cinnabar: #c8392e;
+  --dq-stone: #2e5c6e;
+  --dq-gold: #c9a961;
+  --dq-ink-sub: #6b6b6b;
+  --dq-border: #e3dccd;
+  --dq-layout-bg: #f3efe6;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: var(--dq-ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  background-color: var(--dq-layout-bg);
+}
+
+/* 选区:朱砂红半透明 */
+::selection {
+  background-color: rgba(200, 57, 46, 0.18);
+  color: var(--dq-ink);
+}
+
+/* 滚动条:细而克制 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(26, 26, 26, 0.18);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(26, 26, 26, 0.32);
+}
+
+/* 焦点:朱砂红 */
+:focus-visible {
+  outline: 2px solid var(--dq-cinnabar);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ---------- 顶部标题 ---------- */
+.dq-header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+.dq-logo-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, var(--dq-stone) 0%, #1f4250 100%);
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0;
+  box-shadow: 0 1px 3px rgba(46, 92, 110, 0.3);
+}
+.dq-logo-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--dq-ink);
+  letter-spacing: 0.02em;
+}
+.dq-logo-sub {
+  font-size: 11px;
+  color: var(--dq-ink-sub);
+  padding: 1px 6px;
+  background: rgba(201, 169, 97, 0.12);
+  border-radius: 3px;
+  margin-left: 2px;
+}
+
+/* ---------- 底部版权 ---------- */
+.dq-footer {
+  padding: 14px 24px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--dq-ink-sub);
+  border-top: 1px solid var(--dq-border);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* ---------- ProLayout 紧凑化 ---------- */
+.ant-pro-layout {
+  .ant-pro-layout-content {
+    padding: 16px 20px !important;
+  }
+  .ant-pro-page-container-warp-page-header {
+    padding: 12px 20px !important;
+  }
+}
+
+/* ProTable 密度 */
+.ant-pro-table {
+  .ant-table.ant-table-small .ant-table-thead > tr > th {
+    padding: 6px 8px !important;
+    font-size: 12px;
+    background: #faf8f3 !important;
+    color: var(--dq-ink-sub);
+    font-weight: 500;
+  }
+  .ant-table.ant-table-small .ant-table-tbody > tr > td {
+    padding: 6px 8px !important;
+    font-size: 13px;
+  }
+}
+
+/* ProTable 工具栏 */
+.ant-pro-table-list-toolbar-container {
+  padding: 8px 0 !important;
+}
+
+/* ---------- 状态点 ---------- */
+.dq-status-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+/* ---------- 数据看板卡片 ---------- */
+.dq-stat-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid var(--dq-border);
+  padding: 16px 18px;
+  transition: box-shadow 0.3s ease;
+}
+.dq-stat-card:hover {
+  box-shadow: 0 4px 16px rgba(26, 26, 26, 0.08);
+}
+.dq-stat-card .dq-stat-label {
+  font-size: 12px;
+  color: var(--dq-ink-sub);
+  margin-bottom: 8px;
+}
+.dq-stat-card .dq-stat-value {
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--dq-ink);
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+.dq-stat-card .dq-stat-delta {
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+/* ---------- 实时大屏 ---------- */
+.dq-realtime-screen {
+  min-height: calc(100vh - 120px);
+  background: linear-gradient(135deg, #0f1a1f 0%, #1a1a1a 100%);
+  border-radius: 10px;
+  padding: 24px;
+  color: #f0ede4;
+}
+.dq-realtime-screen .dq-screen-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.dq-realtime-screen .dq-screen-title::before {
+  content: '';
+  width: 4px;
+  height: 18px;
+  background: var(--dq-gold);
+  border-radius: 2px;
+}
+.dq-screen-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(201, 169, 97, 0.15);
+  border-radius: 8px;
+  padding: 16px;
+}
+.dq-screen-card .dq-screen-value {
+  font-size: 32px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+}
+.dq-screen-card .dq-screen-label {
+  font-size: 12px;
+  color: rgba(240, 237, 228, 0.6);
+  margin-top: 6px;
+}
+
+/* ---------- 印章式装饰 ---------- */
+.dq-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--dq-cinnabar);
+  color: var(--dq-cinnabar);
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ---------- 禁用链接 ---------- */
+.dq-link-disabled {
+  color: #bfb8a8 !important;
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* ---------- 缩略图 ---------- */
+.dq-thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 4px;
+  object-fit: cover;
+  border: 1px solid var(--dq-border);
+  background: #f5f0e3;
+  cursor: pointer;
+}
+
+/* ---------- 链接外链 ---------- */
+a[target='_blank'] {
+  &::after {
+    content: '';
+  }
+}
+
+/* ---------- 暗色模式微调 ---------- */
+[data-theme='dark'] {
+  --dq-layout-bg: #0f0f0f;
+  body {
+    background-color: var(--dq-layout-bg);
+  }
+  .dq-stat-card {
+    background: #1f1f1f;
+    border-color: #3a3a3a;
+  }
+  .dq-footer {
+    background: rgba(31, 31, 31, 0.6);
+    border-color: #3a3a3a;
+  }
+}
+
+/* 减少动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

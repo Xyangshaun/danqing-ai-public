@@ -1,0 +1,66 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="paperBg" cx="30%" cy="20%" r="80%">
+      <stop offset="0%" stop-color="#fefdfb"/>
+      <stop offset="100%" stop-color="#f3efe4"/>
+    </radialGradient>
+    <radialGradient id="inkWash1" cx="80%" cy="70%" r="50%">
+      <stop offset="0%" stop-color="#1a1a1a" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#1a1a1a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="goldWash" cx="15%" cy="80%" r="40%">
+      <stop offset="0%" stop-color="#c9a961" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#c9a961" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="inkBlur">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+  </defs>
+
+  <!-- 宣纸背景 -->
+  <rect width="1200" height="630" fill="url(#paperBg)"/>
+  <rect width="1200" height="630" fill="url(#inkWash1)"/>
+  <rect width="1200" height="630" fill="url(#goldWash)"/>
+
+  <!-- 右侧水墨晕染装饰 -->
+  <g filter="url(#inkBlur)" opacity="0.12">
+    <ellipse cx="980" cy="180" rx="160" ry="120" fill="#1a1a1a"/>
+    <ellipse cx="1050" cy="420" rx="100" ry="80" fill="#2e5c6e"/>
+  </g>
+
+  <!-- 右上角金色笔触 -->
+  <path d="M 850 90 Q 950 70, 1100 100" stroke="#c9a961" stroke-width="3" fill="none" opacity="0.5" stroke-linecap="round"/>
+
+  <!-- 左侧印章 Logo -->
+  <g transform="translate(100, 140)">
+    <rect x="0" y="0" width="88" height="88" rx="4" fill="#c8392e"/>
+    <text x="44" y="62" text-anchor="middle" font-family="Songti SC, SimSun, serif" font-size="40" font-weight="700" fill="#faf8f3" letter-spacing="-2">DQ</text>
+  </g>
+
+  <!-- 品牌名 -->
+  <text x="208" y="200" font-family="Songti SC, SimSun, serif" font-size="44" font-weight="600" fill="#1a1a1a">丹青有AI</text>
+  <text x="208" y="232" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" letter-spacing="4" fill="#6b6b6b">DANQING AI</text>
+
+  <!-- 金色分隔线 -->
+  <line x1="100" y1="290" x2="180" y2="290" stroke="#c9a961" stroke-width="2"/>
+
+  <!-- 主 Slogan -->
+  <text x="100" y="370" font-family="Songti SC, SimSun, serif" font-size="68" font-weight="600" fill="#1a1a1a" letter-spacing="-1">丹青有AI</text>
+  <text x="100" y="450" font-family="Songti SC, SimSun, serif" font-size="68" font-weight="600" fill="#1a1a1a" letter-spacing="-1">让艺术教育更智能</text>
+
+  <!-- 副描述 -->
+  <text x="100" y="510" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="22" fill="#6b6b6b">面向高校艺术教育的 AI 作业诊断系统 · 3 秒智能分析</text>
+
+  <!-- 底部三维度标签 -->
+  <g transform="translate(100, 555)">
+    <rect x="0" y="0" width="110" height="32" rx="16" fill="none" stroke="#c8392e" stroke-width="1.2"/>
+    <text x="55" y="21" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="14" fill="#c8392e">构图分析</text>
+    <rect x="126" y="0" width="110" height="32" rx="16" fill="none" stroke="#2e5c6e" stroke-width="1.2"/>
+    <text x="181" y="21" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="14" fill="#2e5c6e">色彩分析</text>
+    <rect x="252" y="0" width="110" height="32" rx="16" fill="none" stroke="#c9a961" stroke-width="1.2"/>
+    <text x="307" y="21" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="14" fill="#a8854a">笔触分析</text>
+  </g>
+
+  <!-- 右下角域名 -->
+  <text x="1100" y="590" text-anchor="end" font-family="PingFang SC, sans-serif" font-size="16" fill="#6b6b6b" opacity="0.6">www.domain</text>
+</svg>

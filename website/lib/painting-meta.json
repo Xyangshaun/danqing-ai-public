@@ -1,0 +1,67 @@
+{
+  "/images/gallery-flower.jpg": {
+    "w": 912,
+    "h": 1216,
+    "ratio": 0.75
+  },
+  "/images/gallery-greavewave.jpg": {
+    "w": 1280,
+    "h": 883,
+    "ratio": 1.4496
+  },
+  "/images/gallery-hero.jpg": {
+    "w": 912,
+    "h": 1216,
+    "ratio": 0.75
+  },
+  "/images/gallery-horatii.jpg": {
+    "w": 1280,
+    "h": 998,
+    "ratio": 1.2826
+  },
+  "/images/gallery-lotus.jpg": {
+    "w": 912,
+    "h": 1216,
+    "ratio": 0.75
+  },
+  "/images/gallery-monalisa.jpg": {
+    "w": 1280,
+    "h": 1908,
+    "ratio": 0.6709
+  },
+  "/images/gallery-mountain.jpg": {
+    "w": 912,
+    "h": 1216,
+    "ratio": 0.75
+  },
+  "/images/gallery-pearl.jpg": {
+    "w": 1280,
+    "h": 1435,
+    "ratio": 0.892
+  },
+  "/images/gallery-sculpture.jpg": {
+    "w": 912,
+    "h": 1216,
+    "ratio": 0.75
+  },
+  "/images/gallery-starrynight.jpg": {
+    "w": 1280,
+    "h": 1014,
+    "ratio": 1.2623
+  },
+  "/images/gallery-sunrise.jpg": {
+    "w": 1280,
+    "h": 993,
+    "ratio": 1.289
+  },
+  "/images/gallery-thinker.jpg": {
+    "w": 960,
+    "h": 1280,
+    "ratio": 0.75
+  },
+  "/images/gallery-waterlilies.jpg": {
+    "w": 1280,
+    "h": 1230,
+    "ratio": 1.0407
+  }
+}

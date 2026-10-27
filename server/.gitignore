@@ -1,0 +1,35 @@
+# 依赖
+node_modules/
+
+# 构建产物
+dist/
+*.tsbuildinfo
+
+# 环境变量(含密钥,严禁提交)
+.env
+.env.local
+.env.*.local
+
+# Prisma 生成产物
+prisma/migrations/dev.db*
+prisma/migrations/dev.db-journal
+
+# 日志
+logs/
+*.log
+
+# 上传文件目录(multer 临时存储,分析后自动清理)
+uploads/
+test-uploads/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# 旧代码备份(参考用,不参与构建)
+_legacy/
+
+# 系统
+.DS_Store
+Thumbs.db

@@ -1,0 +1,25 @@
+<svg width="800" height="450" viewBox="0 0 800 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg2" cx="30%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#fefdfb"/>
+      <stop offset="100%" stop-color="#f3efe4"/>
+    </radialGradient>
+    <filter id="blur2"><feGaussianBlur stdDeviation="6"/></filter>
+  </defs>
+  <rect width="800" height="450" fill="url(#bg2)"/>
+  <g filter="url(#blur2)" opacity="0.16">
+    <ellipse cx="620" cy="200" rx="160" ry="120" fill="#1a1a1a"/>
+    <ellipse cx="700" cy="370" rx="100" ry="70" fill="#1a1a1a" opacity="0.6"/>
+  </g>
+  <path d="M 60 90 Q 200 70, 340 95" stroke="#1a1a1a" stroke-width="6" fill="none" opacity="0.3" stroke-linecap="round"/>
+  <path d="M 60 110 Q 180 100, 300 108" stroke="#1a1a1a" stroke-width="2" fill="none" opacity="0.2" stroke-linecap="round"/>
+  <g transform="translate(80, 360)">
+    <rect width="48" height="48" rx="3" fill="#c8392e"/>
+    <text x="24" y="34" text-anchor="middle" font-family="Songti SC, serif" font-size="22" font-weight="700" fill="#faf8f3">DQ</text>
+  </g>
+  <text x="80" y="150" font-family="PingFang SC, sans-serif" font-size="13" letter-spacing="3" fill="#c9a961">品牌美学</text>
+  <text x="80" y="200" font-family="Songti SC, serif" font-size="34" font-weight="600" fill="#1a1a1a">水墨美学</text>
+  <text x="80" y="244" font-family="Songti SC, serif" font-size="34" font-weight="600" fill="#1a1a1a">与 AI 评图</text>
+  <line x1="80" y1="270" x2="140" y2="270" stroke="#c9a961" stroke-width="2"/>
+  <text x="80" y="310" font-family="Songti SC, serif" font-size="16" fill="#6b6b6b">当传统审美遇见智能算法</text>
+</svg>

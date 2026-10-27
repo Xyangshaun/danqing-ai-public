@@ -1,0 +1,488 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background-color: #f5f2eb;
+  color: #1a1a1a;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-serif {
+  font-family: 'Noto Serif SC', 'Songti SC', 'SimSun', 'STSong', serif;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+}
+
+/* ====== 水墨纹理 ====== */
+.ink-texture {
+  background-image:
+    radial-gradient(ellipse at 20% 30%, rgba(26, 26, 26, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(26, 26, 26, 0.02) 0%, transparent 50%);
+}
+
+/* ====== 卡片层级 ====== */
+.surface-1 {
+  background-color: #fdfcf9;
+  border: 1px solid rgba(15, 15, 15, 0.06);
+}
+.surface-2 {
+  background-color: #f9f6f0;
+  border: 1px solid rgba(15, 15, 15, 0.08);
+}
+.surface-3 {
+  background-color: #f5f2eb;
+  border: 1px solid rgba(15, 15, 15, 0.1);
+}
+
+/* ====== 兼容旧样式 ====== */
+.card-shadow { box-shadow: 0 1px 3px 0 rgba(15, 15, 15, 0.06), 0 1px 2px 0 rgba(15, 15, 15, 0.04); }
+.card-shadow-hover { box-shadow: 0 4px 12px -2px rgba(15, 15, 15, 0.08), 0 2px 4px -1px rgba(15, 15, 15, 0.04); }
+.ink-border { border: 2px solid #1a1a1a; border-radius: 4px; }
+
+/* ====== 滚动条美化（生态软件感） ====== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(15, 15, 15, 0.15);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(15, 15, 15, 0.25);
+}
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+/* ====== 焦点环（专业软件感） ====== */
+.focus-ring {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(196, 30, 58, 0.4);
+}
+.focus-ring-stone {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(46, 95, 161, 0.4);
+}
+
+/* ====== 热力图叠层 ====== */
+.heatmap-overlay {
+  background: radial-gradient(circle at 50% 50%,
+    rgba(196, 30, 58, 0.3) 0%,
+    rgba(196, 30, 58, 0.1) 40%,
+    transparent 70%);
+}
+
+/* ====== 动画 ====== */
+@keyframes inkDrop {
+  0% { transform: scale(0); opacity: 0.8; }
+  100% { transform: scale(4); opacity: 0; }
+}
+.ink-drop-animation { animation: inkDrop 1.5s ease-out infinite; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.float-animation { animation: float 3s ease-in-out infinite; }
+
+@keyframes brushStroke {
+  0% { width: 0; }
+  100% { width: 100%; }
+}
+.brush-stroke-animation { animation: brushStroke 2s ease-out forwards; }
+
+/* ====== AI 分析过程动画 ====== */
+/* 扫描线：在图片上从上到下移动，模拟 AI 视觉扫描 */
+@keyframes scanLine {
+  0% { top: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+.scan-line-animation { animation: scanLine 2.4s ease-in-out infinite; }
+
+/* 阶段卡片脉冲：当前进行中的阶段有呼吸光晕 */
+@keyframes stagePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(196, 30, 58, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(196, 30, 58, 0); }
+}
+.stage-pulse-animation { animation: stagePulse 1.6s ease-out infinite; }
+
+/* 进度条流光：进度条内部有流动的高光带 */
+@keyframes progressShine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+.progress-shine-animation { animation: progressShine 1.8s ease-in-out infinite; }
+
+/* 数据点闪烁：分析详情文字切换时的淡入 */
+@keyframes detailFade {
+  0% { opacity: 0; transform: translateY(4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.detail-fade-animation { animation: detailFade 0.4s ease-out; }
+
+/* ====== 骨架屏闪烁 ====== */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(15, 15, 15, 0.04) 25%,
+    rgba(15, 15, 15, 0.08) 37%,
+    rgba(15, 15, 15, 0.04) 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+
+/* ====== 安全区 ====== */
+.safe-area-top { padding-top: env(safe-area-inset-top); }
+.safe-area-bottom { padding-bottom: env(safe-area-inset-bottom); }
+
+/* ====== 命令面板样式（生态软件感） ====== */
+.cmd-overlay {
+  backdrop-filter: blur(12px);
+  background-color: rgba(15, 15, 15, 0.4);
+}
+
+/* ====== 选中文本 ====== */
+::selection {
+  background-color: rgba(196, 30, 58, 0.2);
+  color: #0f0f0f;
+}
+
+/* ============================================================
+ * 主题与界面密度(由 useTheme hook 设置 data-theme/data-density)
+ * ============================================================ */
+
+/* 界面密度:通过 html font-size 缩放全局尺寸(rem 单位自动跟随) */
+[data-density="compact"] html,
+html[data-density="compact"] {
+  font-size: 14px;
+}
+[data-density="spacious"] html,
+html[data-density="spacious"] {
+  font-size: 18px;
+}
+
+/* 暗色主题(ink):覆盖关键视觉元素 — 水墨色系反向映射 */
+[data-theme="dark"] body {
+  background-color: #1a1a1a;
+  color: #f5f2eb;
+}
+
+[data-theme="dark"] .surface-1 {
+  background-color: #121212;
+  border-color: rgba(245, 242, 235, 0.08);
+}
+[data-theme="dark"] .surface-2 {
+  background-color: #161616;
+  border-color: rgba(245, 242, 235, 0.1);
+}
+[data-theme="dark"] .surface-3 {
+  background-color: #1a1a1a;
+  border-color: rgba(245, 242, 235, 0.12);
+}
+
+/* 滚动条暗色 */
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: rgba(245, 242, 235, 0.15);
+}
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 242, 235, 0.25);
+}
+
+/* 焦点环暗色背景下的可见性 */
+[data-theme="dark"] .focus-ring {
+  box-shadow: 0 0 0 2px rgba(196, 30, 58, 0.6);
+}
+
+/* 选中文本暗色 */
+[data-theme="dark"] ::selection {
+  background-color: rgba(196, 30, 58, 0.35);
+  color: #f5f2eb;
+}
+
+/* ============================================================
+ * 暗色主题:Tailwind 调色板覆盖
+ * 原理:rice(亮背景)→暗背景,ink(暗文字)→亮文字
+ * 使用 [data-theme="dark"] 前缀提升特异性,无需 !important
+ * ============================================================ */
+
+/* ---- rice 背景 → 暗色背景 ----
+   层级:rice-50(最浅 rice) → 最深暗色, rice-400(最深 rice) → 最浅暗色
+   保证暗色模式下层次关系与亮色模式一致
+ */
+[data-theme="dark"] .bg-rice-50 { background-color: #0d0d0d; }
+[data-theme="dark"] .bg-rice-100 { background-color: #121212; }
+[data-theme="dark"] .bg-rice-200 { background-color: #161616; }
+[data-theme="dark"] .bg-rice-300 { background-color: #1a1a1a; }
+[data-theme="dark"] .bg-rice-400 { background-color: #232323; }
+
+/* ---- ink 文字 → 亮色文字 ---- */
+[data-theme="dark"] .text-ink-900 { color: #f5f2eb; }
+[data-theme="dark"] .text-ink-800 { color: #e5e5e5; }
+[data-theme="dark"] .text-ink-700 { color: #d4d4d4; }
+[data-theme="dark"] .text-ink-600 { color: #a3a3a3; }
+[data-theme="dark"] .text-ink-500 { color: #8a8a8a; }
+[data-theme="dark"] .text-ink-400 { color: #737373; }
+[data-theme="dark"] .text-ink-300 { color: #595959; }
+
+/* ---- ink 背景(按钮/导航等) → 暗色但稍浅 ---- */
+[data-theme="dark"] .bg-ink-900 { background-color: #2d2d2d; }
+[data-theme="dark"] .bg-ink-800 { background-color: #333333; }
+[data-theme="dark"] .bg-ink-700 { background-color: #3a3a3a; }
+[data-theme="dark"] .bg-ink-600 { background-color: #404040; }
+
+/* ---- ink 透明度背景 → 亮色低透明度 ---- */
+[data-theme="dark"] .bg-ink-900\/5 { background-color: rgba(245, 242, 235, 0.05); }
+[data-theme="dark"] .bg-ink-900\/8 { background-color: rgba(245, 242, 235, 0.08); }
+[data-theme="dark"] .bg-ink-900\/10 { background-color: rgba(245, 242, 235, 0.10); }
+[data-theme="dark"] .bg-ink-900\/15 { background-color: rgba(245, 242, 235, 0.15); }
+[data-theme="dark"] .bg-ink-900\/20 { background-color: rgba(245, 242, 235, 0.20); }
+/* bg-ink-900/80 用于图片叠加层,保持暗色 */
+[data-theme="dark"] .bg-ink-900\/80 { background-color: rgba(15, 15, 15, 0.80); }
+
+/* ---- ink 透明度边框 → 亮色低透明度 ---- */
+[data-theme="dark"] .border-ink-900\/5 { border-color: rgba(245, 242, 235, 0.05); }
+[data-theme="dark"] .border-ink-900\/6 { border-color: rgba(245, 242, 235, 0.06); }
+[data-theme="dark"] .border-ink-900\/8 { border-color: rgba(245, 242, 235, 0.08); }
+[data-theme="dark"] .border-ink-900\/10 { border-color: rgba(245, 242, 235, 0.10); }
+[data-theme="dark"] .border-ink-900\/15 { border-color: rgba(245, 242, 235, 0.15); }
+[data-theme="dark"] .border-ink-900\/20 { border-color: rgba(245, 242, 235, 0.20); }
+[data-theme="dark"] .border-ink-900 { border-color: rgba(245, 242, 235, 0.25); }
+
+/* ---- ink 透明度环形(focus ring) → 亮色 ---- */
+[data-theme="dark"] .ring-ink-900\/15 { --tw-ring-color: rgba(245, 242, 235, 0.15); }
+
+/* ---- hover 状态:rice → 暗色 hover ---- */
+[data-theme="dark"] .hover\:bg-rice-50:hover { background-color: #121212; }
+[data-theme="dark"] .hover\:bg-rice-100:hover { background-color: #161616; }
+[data-theme="dark"] .hover\:bg-rice-200:hover { background-color: #1a1a1a; }
+[data-theme="dark"] .hover\:bg-rice-300:hover { background-color: #232323; }
+
+/* ---- hover 状态:ink 透明度 → 亮色低透明度 ---- */
+[data-theme="dark"] .hover\:bg-ink-900\/5:hover { background-color: rgba(245, 242, 235, 0.05); }
+[data-theme="dark"] .hover\:bg-ink-900\/8:hover { background-color: rgba(245, 242, 235, 0.08); }
+[data-theme="dark"] .hover\:bg-ink-900\/10:hover { background-color: rgba(245, 242, 235, 0.10); }
+[data-theme="dark"] .hover\:bg-ink-900\/15:hover { background-color: rgba(245, 242, 235, 0.15); }
+[data-theme="dark"] .hover\:bg-ink-900:hover { background-color: #3a3a3a; }
+
+/* ---- hover 状态:ink 文字 → 亮色 ---- */
+[data-theme="dark"] .hover\:text-ink-700:hover { color: #d4d4d4; }
+[data-theme="dark"] .hover\:text-ink-900:hover { color: #f5f2eb; }
+
+/* ---- active 状态 ---- */
+[data-theme="dark"] .active\:bg-rice-200:active { background-color: #2a2a2a; }
+[data-theme="dark"] .active\:bg-ink-900\/8:active { background-color: rgba(245, 242, 235, 0.08); }
+
+/* ---- 阴影:暗色模式下减淡 ---- */
+[data-theme="dark"] .shadow-subtle { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2); }
+[data-theme="dark"] .shadow-card { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2); }
+[data-theme="dark"] .shadow-card-hover { box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2); }
+[data-theme="dark"] .shadow-overlay { box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.5), 0 4px 8px -2px rgba(0, 0, 0, 0.3); }
+[data-theme="dark"] .shadow-modal { box-shadow: 0 16px 48px -8px rgba(0, 0, 0, 0.6), 0 8px 16px -4px rgba(0, 0, 0, 0.3); }
+
+/* ---- Placeholder 文字色 ---- */
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: #595959;
+}
+
+/* ---- 背景 canvas / 渐变层 ---- */
+[data-theme="dark"] .bg-gradient-to-b,
+[data-theme="dark"] .bg-gradient-to-br,
+[data-theme="dark"] .bg-gradient-to-t {
+  background-image: none;
+}
+
+/* ============================================================
+ * 暗色主题补充:white/ink-100/ink-200/stone 等非 rice 系颜色覆盖
+ * ============================================================ */
+
+/* ---- white 背景 → 暗色(卡片/弹窗/输入框等) ---- */
+[data-theme="dark"] .bg-white { background-color: #232323; }
+[data-theme="dark"] .bg-white\/60 { background-color: rgba(35, 35, 35, 0.6); }
+[data-theme="dark"] .bg-white\/70 { background-color: rgba(35, 35, 35, 0.7); }
+[data-theme="dark"] .bg-white\/80 { background-color: rgba(35, 35, 35, 0.8); }
+[data-theme="dark"] .bg-white\/90 { background-color: rgba(35, 35, 35, 0.9); }
+[data-theme="dark"] .bg-white\/95 { background-color: rgba(35, 35, 35, 0.95); }
+/* white/15 用于彩色背景上的玻璃效果,保持半透明亮色 */
+[data-theme="dark"] .bg-white\/15 { background-color: rgba(255, 255, 255, 0.08); }
+[data-theme="dark"] .bg-white\/10 { background-color: rgba(255, 255, 255, 0.05); }
+[data-theme="dark"] .bg-white\/5 { background-color: rgba(255, 255, 255, 0.03); }
+
+/* ---- white hover ---- */
+[data-theme="dark"] .hover\:bg-white:hover { background-color: #2a2a2a; }
+[data-theme="dark"] .hover\:bg-white\/90:hover { background-color: rgba(35, 35, 35, 0.9); }
+[data-theme="dark"] .hover\:bg-white\/70:hover { background-color: rgba(35, 35, 35, 0.7); }
+
+/* ---- ink-100/ink-200 补充(边框/文字/背景) ---- */
+[data-theme="dark"] .border-ink-100 { border-color: rgba(245, 242, 235, 0.06); }
+[data-theme="dark"] .border-ink-200 { border-color: rgba(245, 242, 235, 0.08); }
+[data-theme="dark"] .text-ink-200 { color: #404040; }
+[data-theme="dark"] .text-ink-100 { color: #2d2d2d; }
+[data-theme="dark"] .text-ink-50 { color: #1a1a1a; }
+[data-theme="dark"] .bg-ink-100 { background-color: #2a2a2a; }
+[data-theme="dark"] .bg-ink-200 { background-color: #333333; }
+[data-theme="dark"] .bg-ink-50 { background-color: #252525; }
+
+/* ---- ring-rice-50 → 暗色 ring ---- */
+[data-theme="dark"] .ring-rice-50 { --tw-ring-color: #0d0d0d; }
+[data-theme="dark"] .ring-rice-100 { --tw-ring-color: #121212; }
+
+/* ---- stone 渐变(头像等) → 暗色渐变 ---- */
+[data-theme="dark"] .from-stone { --tw-gradient-from: #3a3a3a var(--tw-gradient-from-position); --tw-gradient-to: transparent var(--tw-gradient-to-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+[data-theme="dark"] .to-stone-dark { --tw-gradient-to: #2d2d2d var(--tw-gradient-to-position); }
+[data-theme="dark"] .from-stone\/5 { --tw-gradient-from: rgba(58, 58, 58, 0.05) var(--tw-gradient-from-position); }
+[data-theme="dark"] .to-transparent { --tw-gradient-to: transparent var(--tw-gradient-to-position); }
+
+/* ---- via-transparent / via-white ---- */
+[data-theme="dark"] .via-transparent { --tw-gradient-via: transparent var(--tw-gradient-via-position); }
+[data-theme="dark"] .via-white\/40 { --tw-gradient-via: rgba(255, 255, 255, 0.15) var(--tw-gradient-via-position); }
+
+/* ---- from-cinnabar 系列(保留品牌色,但降低透明度) ---- */
+[data-theme="dark"] .from-cinnabar\/5 { --tw-gradient-from: rgba(196, 30, 58, 0.08) var(--tw-gradient-from-position); }
+[data-theme="dark"] .from-cinnabar\/20 { --tw-gradient-from: rgba(196, 30, 58, 0.15) var(--tw-gradient-from-position); }
+
+/* ---- from-ink-900 系列 ---- */
+[data-theme="dark"] .from-ink-900\/50 { --tw-gradient-from: rgba(0, 0, 0, 0.3) var(--tw-gradient-from-position); }
+
+/* ---- text-white 保持白色(用于彩色/渐变背景上的文字) ---- */
+/* text-white 不覆盖,保持白色 */
+
+/* ---- bg-cinnabar 系列保持品牌色(按钮等) ---- */
+/* bg-cinnabar 不覆盖,保持朱砂红 */
+
+/* ---- 补充:hover:border-ink-200 ---- */
+[data-theme="dark"] .hover\:border-ink-200:hover { border-color: rgba(245, 242, 235, 0.12); }
+[data-theme="dark"] .hover\:border-ink-900\/20:hover { border-color: rgba(245, 242, 235, 0.20); }
+
+/* ---- 补充:hover:text-cinnabar(保持品牌色) ---- */
+/* hover:text-cinnabar 不覆盖 */
+
+/* ---- 补充:bg-cinnabar/5, bg-cinnabar/10(品牌色低透明度背景) ---- */
+[data-theme="dark"] .bg-cinnabar\/5 { background-color: rgba(196, 30, 58, 0.08); }
+[data-theme="dark"] .bg-cinnabar\/10 { background-color: rgba(196, 30, 58, 0.12); }
+
+/* ---- 补充:placeholder 文字色 ---- */
+[data-theme="dark"] .placeholder\:text-ink-300::placeholder { color: #595959; }
+
+/* ============================================================
+   报告打印样式(ReportPreviewPage 挂载时给 body 加 .report-print-mode)
+   - 隐藏应用骨架(Header/Sidebar/工具栏),只保留报告模板
+   - 报告固定使用浅色宣纸底,打印所见即所得
+   ============================================================ */
+@media print {
+  body.report-print-mode {
+    background: #fdfcf9 !important;
+  }
+  body.report-print-mode header,
+  body.report-print-mode aside,
+  body.report-print-mode .no-print {
+    display: none !important;
+  }
+  body.report-print-mode main {
+    overflow: visible !important;
+    height: auto !important;
+  }
+  body.report-print-mode .report-template {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  @page {
+    margin: 12mm;
+  }
+}
+[data-theme="dark"] .placeholder\:text-ink-400::placeholder { color: #595959; }
+
+/* ---- 补充:focus ring ---- */
+[data-theme="dark"] .focus\:ring-cinnabar\/30:focus { --tw-ring-color: rgba(196, 30, 58, 0.3); }
+[data-theme="dark"] .focus\:border-cinnabar:focus { border-color: #c41e3a; }
+[data-theme="dark"] .focus\:border-stone:focus { border-color: #595959; }
+
+/* ============================================================
+ * 暗色主题补充:rice 透明度变体(顶部导航栏/设置页第二层导航栏白色问题)
+ * ============================================================ */
+
+/* ---- bg-rice-50/95:顶部导航栏背景(Header) ---- */
+[data-theme="dark"] .bg-rice-50\/95 { background-color: rgba(13, 13, 13, 0.95); }
+[data-theme="dark"] .bg-rice-50\/90 { background-color: rgba(13, 13, 13, 0.90); }
+[data-theme="dark"] .bg-rice-50\/80 { background-color: rgba(13, 13, 13, 0.80); }
+
+/* ---- bg-rice-100/50:设置页左侧导航栏背景(SettingsPage 第二层) ---- */
+[data-theme="dark"] .bg-rice-100\/50 { background-color: rgba(18, 18, 18, 0.5); }
+[data-theme="dark"] .bg-rice-100\/70 { background-color: rgba(18, 18, 18, 0.7); }
+[data-theme="dark"] .bg-rice-100\/80 { background-color: rgba(18, 18, 18, 0.8); }
+[data-theme="dark"] .bg-rice-100\/90 { background-color: rgba(18, 18, 18, 0.9); }
+
+/* ---- bg-rice-200 透明度变体 ---- */
+[data-theme="dark"] .bg-rice-200\/50 { background-color: rgba(22, 22, 22, 0.5); }
+[data-theme="dark"] .bg-rice-200\/80 { background-color: rgba(22, 22, 22, 0.8); }
+
+/* ============================================================
+ * 暗色主题补充:ink-900 极低透明度(hover/边框不可见问题)
+ * ============================================================ */
+
+/* ---- bg-ink-900/3, /4:hover 背景(通知项/命令面板) ---- */
+[data-theme="dark"] .bg-ink-900\/3 { background-color: rgba(245, 242, 235, 0.03); }
+[data-theme="dark"] .bg-ink-900\/4 { background-color: rgba(245, 242, 235, 0.04); }
+[data-theme="dark"] .hover\:bg-ink-900\/3:hover { background-color: rgba(245, 242, 235, 0.03); }
+[data-theme="dark"] .hover\:bg-ink-900\/4:hover { background-color: rgba(245, 242, 235, 0.04); }
+
+/* ---- border-ink-900/3, /4:通知项分割线 ---- */
+[data-theme="dark"] .border-ink-900\/3 { border-color: rgba(245, 242, 235, 0.03); }
+[data-theme="dark"] .border-ink-900\/4 { border-color: rgba(245, 242, 235, 0.04); }
+
+/* ---- bg-ink-900/10:hover 背景(设置页按钮) ---- */
+[data-theme="dark"] .hover\:bg-ink-900\/10:hover { background-color: rgba(245, 242, 235, 0.10); }
+
+/* ============================================================
+ * 暗色主题补充:cinnabar 低透明度(通知未读背景)
+ * ============================================================ */
+[data-theme="dark"] .bg-cinnabar\/3 { background-color: rgba(196, 30, 58, 0.06); }
+[data-theme="dark"] .hover\:bg-cinnabar\/5:hover { background-color: rgba(196, 30, 58, 0.08); }
+[data-theme="dark"] .hover\:bg-cinnabar\/10:hover { background-color: rgba(196, 30, 58, 0.12); }
+
+/* ============================================================
+ * 暗色主题补充:品牌色透明度(jade/gold/stone 通知图标背景)
+ * ============================================================ */
+[data-theme="dark"] .bg-jade\/10 { background-color: rgba(91, 140, 90, 0.15); }
+[data-theme="dark"] .bg-gold\/10 { background-color: rgba(212, 175, 55, 0.15); }
+[data-theme="dark"] .bg-stone\/10 { background-color: rgba(46, 95, 161, 0.15); }
+[data-theme="dark"] .bg-cinnabar\/10 { background-color: rgba(196, 30, 58, 0.12); }
+
+/* ---- border-l 品牌色(通知级别色条) ---- */
+[data-theme="dark"] .border-l-jade { border-left-color: #5b8c5a; }
+[data-theme="dark"] .border-l-gold-dark { border-left-color: #a8862a; }
+[data-theme="dark"] .border-l-cinnabar { border-left-color: #c41e3a; }
+
+/* ============================================================
+ * 暗色主题补充:text-rice 系列(active 导航项文字)
+ * 在暗色模式下 bg-ink-900 被覆盖为 #2d2d2d(深色),
+ * text-rice-100/300 需保持亮色确保可读性
+ * ============================================================ */
+[data-theme="dark"] .text-rice-100 { color: #f9f6f0; }
+[data-theme="dark"] .text-rice-300 { color: #ede8df; }
+[data-theme="dark"] .text-rice-50 { color: #fdfcf9; }

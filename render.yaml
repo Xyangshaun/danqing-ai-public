@@ -1,0 +1,106 @@
+services:
+  - type: web
+    name: danqing-ai-server
+    env: node
+    region: singapore
+    plan: free
+    buildCommand: cd server && npm install && npm run build && npx prisma generate
+    startCommand: node server/dist/index.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        render:
+          source: envPort
+      # ---------- 数据库/缓存 ----------
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      # ---------- JWT(RS256) ----------
+      - key: JWT_PRIVATE_KEY
+        sync: false
+      - key: JWT_PUBLIC_KEY
+        sync: false
+      - key: JWT_KEY_ID
+        sync: false
+      - key: JWT_ISSUER
+        value: danqing-ai-auth
+      - key: JWT_AUDIENCE_WEB
+        value: danqing-ai-web
+      - key: JWT_AUDIENCE_ADMIN
+        value: danqing-ai-admin
+      - key: JWT_AUDIENCE_MOBILE
+        value: danqing-ai-mobile
+      - key: JWT_ACCESS_EXPIRES
+        value: 15m
+      - key: JWT_REFRESH_EXPIRES
+        value: 7d
+      # ---------- Cookie ----------
+      - key: COOKIE_SECURE
+        value: "true"
+      - key: COOKIE_DOMAIN
+        sync: false
+      - key: COOKIE_SAMESITE
+        value: lax
+      - key: COOKIE_PATH
+        value: /api/v1/auth
+      - key: COOKIE_MAX_AGE
+        value: "604800"
+      # ---------- 飞书 OAuth ----------
+      - key: FEISHU_APP_ID
+        sync: false
+      - key: FEISHU_APP_SECRET
+        sync: false
+      - key: FEISHU_REDIRECT_URI_WEB
+        sync: false
+      - key: FEISHU_REDIRECT_URI_ADMIN
+        sync: false
+      - key: FEISHU_REDIRECT_URI_MOBILE
+        sync: false
+      - key: FEISHU_AUTHZ_ENDPOINT
+        value: https://open.feishu.cn/open-apis/authen/v1/authorize
+      - key: FEISHU_TOKEN_ENDPOINT
+        value: https://open.feishu.cn/open-apis/authen/v1/oidc/access_token
+      - key: FEISHU_USERINFO_ENDPOINT
+        value: https://open.feishu.cn/open-apis/authen/v1/user_info
+      # ---------- CORS ----------
+      - key: CORS_ORIGINS
+        sync: false
+      # ---------- 限流 ----------
+      - key: RATE_LIMIT_AUTH_PER_MIN
+        value: "10"
+      - key: RATE_LIMIT_CALLBACK_PER_MIN
+        value: "5"
+      - key: RATE_LIMIT_REFRESH_PER_MIN
+        value: "20"
+      - key: RATE_LIMIT_API_PER_MIN
+        value: "60"
+      # ---------- 租户默认值 ----------
+      - key: TENANT_DEFAULT_PLAN
+        value: free
+      - key: TENANT_DEFAULT_TYPE
+        value: individual
+      # ---------- 文件上传 ----------
+      - key: UPLOAD_DIR
+        value: uploads
+      - key: UPLOAD_MAX_SIZE
+        value: "10485760"
+      # ---------- AI 视觉分析 ----------
+      - key: AI_ENABLED
+        value: "false"
+      - key: AI_API_KEY
+        sync: false
+      - key: AI_API_URL
+        value: https://open.bigmodel.cn/api/paas/v4/chat/completions
+      - key: AI_MODEL_NAME
+        value: glm-4v-flash
+      - key: AI_TIMEOUT_MS
+        value: "5000"
+      # ---------- 安全/日志 ----------
+      - key: ENABLE_HSTS
+        value: "true"
+      - key: LOG_LEVEL
+        value: info
+    autoDeploy: true

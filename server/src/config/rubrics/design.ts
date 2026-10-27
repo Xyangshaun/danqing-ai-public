@@ -1,0 +1,312 @@
+// ============================================================
+// 设计类评分标准数据(14 条子指标)
+// 逐条对应 .trae/documents/art-evaluation-standards.md §3.2 子指标表
+//
+// 维度结构(权重表 §3.1):
+//   visualHierarchy   视觉层次(3条客观 + 1条语义)
+//   typography        排版与构成(2条客观 + 2条语义)
+//   colorApplication  色彩应用(2条客观 + 1条语义)
+//   overall           整体与创意表达(吸收文档第四维"创意表达"30%,1条客观 + 2条语义)
+//
+// 说明:DesignAnalysis 代码维度为 3 个,文档第四维"创意表达"(30%)
+// 以 semanticOnly 条目并入 overall 维度,规范出处如实标注。
+// ============================================================
+
+import type { RubricCriterion } from './types.js';
+
+const SRC_Cafa = '中央美术学院《基础部评分细则》';
+const SRC_Thuaid = '清华美院《工业设计教学评估标准》';
+const SRC_Gome = '中国美术学院《专业基础教学大纲》';
+
+export const DESIGN_RUBRICS: RubricCriterion[] = [
+  // ============ 维度一:视觉层次(25%) ============
+
+  {
+    rubricId: 'DESIGN-HIER-GOLDEN',
+    artType: 'design',
+    dimensionKey: 'visualHierarchy',
+    dimensionLabel: '视觉层次',
+    dimensionWeight: 0.25,
+    subIndicator: '视觉焦点明确度',
+    aiFeature: '显著性图峰值、主体几何中心落点',
+    quantification: '焦点唯一且对比度差 ≥30%(黄金分割评分≥60)',
+    thresholds: [{ metricKey: 'goldenRatioScore', op: '>=', value: 60, label: '焦点落于黄金分割点附近(评分≥60)' }],
+    semanticOnly: false,
+    bandDescriptions: {
+      优: '视觉焦点唯一明确,主次对比强烈(≥30%)',
+      良: '焦点基本明确,主次对比尚可',
+      中: '焦点不够突出或多焦点争抢',
+      差: '无明确焦点,视觉混乱',
+    },
+    referenceExample: '米勒-布罗克曼《音乐会海报》焦点控制',
+    source: SRC_Thuaid,
+  },
+  {
+    rubricId: 'DESIGN-HIER-THIRDS',
+    artType: 'design',
+    dimensionKey: 'visualHierarchy',
+    dimensionLabel: '视觉层次',
+    dimensionWeight: 0.25,
+    subIndicator: '信息层级递进',
+    aiFeature: '视觉重心与三分线交点、对比度梯度',
+    quantification: '≥3 级层级(标题/副标/正文,三分法评分≥60)',
+    thresholds: [{ metricKey: 'ruleOfThirdsScore', op: '>=', value: 60, label: '层级递进符合视觉动线(三分法评分≥60)' }],
+    semanticOnly: false,
+    bandDescriptions: {
+      优: '信息层级递进清晰(≥3 级),视觉动线流畅',
+      良: '层级尚清晰,动线基本成立',
+      中: '层级模糊,主次不清',
+      差: '层级混乱,无视觉动线',
+    },
+    referenceExample: '埃米尔·鲁德《Typography》层级体系',
+    source: SRC_Thuaid,
+  },
+  {
+    rubricId: 'DESIGN-HIER-WHITESPACE',
+    artType: 'design',
+    dimensionKey: 'visualHierarchy',
+    dimensionLabel: '视觉层次',
+    dimensionWeight: 0.25,
+    subIndicator: '留白处理',
+    aiFeature: '负空间面积占比',
+    quantification: '留白 30%~50% 为得当',
+    thresholds: [{ metricKey: 'whitespaceRatio', op: 'between', value: [0.3, 0.5], label: '留白占比 30%-50%(负空间经营)' }],
+    semanticOnly: false,
+    bandDescriptions: {
+      优: '留白得当,负空间有呼吸感与节奏',
+      良: '留白处理较好',
+      中: '留白过满或过空',
+      差: '留白失当,版面窒息或空洞',
+    },
+    referenceExample: '原研哉《白》的留白哲学',
+    source: SRC_Thuaid,
+  },
+  {
+    rubricId: 'DESIGN-HIER-RHYTHM',
+    artType: 'design',
+    dimensionKey: 'visualHierarchy',
+    dimensionLabel: '视觉层次',
+    dimensionWeight: 0.25,
+    subIndicator: '节奏感',
+    aiFeature: '重复元素的间距规律性',
+    quantification: '间距方差小为有节奏(语义判断)',
+    thresholds: [],
+    semanticOnly: true,
+    bandDescriptions: {
+      优: '节奏鲜明有韵律,重复元素间距规律',
+      良: '节奏感一般,规律基本成立',
+      中: '节奏弱,间距随意',
+      差: '无节奏可言',
+    },
+    source: SRC_Thuaid,
+  },
+
+  // ============ 维度二:排版与构成(25%) ============
+
+  {
+    rubricId: 'DESIGN-TYPO-GRID',
+    artType: 'design',
+    dimensionKey: 'typography',
+    dimensionLabel: '排版与构成',
+    dimensionWeight: 0.25,
+    subIndicator: '网格系统遵循',
+    aiFeature: '元素对齐基线、列间距一致',
+    quantification: '对齐率 ≥85% 为良好',
+    thresholds: [{ metricKey: 'typography.gridAdherence', op: '>=', value: 0.85, label: '网格遵循度高(对齐率≥0.85)' }],
+    semanticOnly: false,
+    bandDescriptions: {
+      优: '网格系统严谨遵循(≥85%),秩序感强',
+      良: '网格基本遵循,秩序尚可',
+      中: '网格意识薄弱,对齐杂乱',
+      差: '无网格概念,排版随意',
+    },
+    referenceExample: '米勒-布罗克曼《网格系统》',
+    source: SRC_Thuaid,
+  },
+  {
+    rubricId: 'DESIGN-TYPO-ALIGN',
+    artType: 'design',
+    dimensionKey: 'typography',
+    dimensionLabel: '排版与构成',
+    dimensionWeight: 0.25,
+    subIndicator: '对齐质量',
+    aiFeature: '左/中/右对齐一致性',
+    quantification: '单一对齐方式占比 ≥80%(方向一致性>0.50)',
+    thresholds: [{ metricKey: 'typography.directionCoherence', op: '>=', value: 0.5, label: '对齐方式统一(一致性≥0.50)' }],
+    semanticOnly: false,
+    bandDescriptions: {
+      优: '对齐质量高,基线统一,细节严谨',
+      良: '对齐较好,偶有偏差',
+      中: '对齐杂乱,多种方式混用',
+      差: '对齐随意,无版式规范',
+    },
+    referenceExample: '卡尔·格斯纳为 IBM 设计的网格系统',
+    source: SRC_Thuaid,
+  },
+  {
+    rubricId: 'DESIGN-TYPO-FIGGROUND',
+    artType: 'design',
+    dimensionKey: 'typography',
+    dimensionLabel: '排版与构成',
+    dimensionWeight: 0.25,
+    subIndicator: '正负形运用',
+    aiFeature: '图底关系、正负形转换',
+    quantification: '图底可反转或互衬为佳(语义判断)',
+    thresholds: [],
+    semanticOnly: true,
+    bandDescriptions: {
+      优: '正负形互衬具美感,图底关系经营精到',
+      良: '正负形处理得当',
+      中: '正负形未经营',
+      差: '正负形割裂,图底混乱',
+    },
+    referenceExample: '福田繁雄海报的正负形双关',
+    source: SRC_Cafa,
+  },
+  {
+    rubricId: 'DESIGN-TYPO-PROPORTION',
+    artType: 'design',
+    dimensionKey: 'typography',
+    dimensionLabel: '排版与构成',
+    dimensionWeight: 0.25,
+    subIndicator: '比例尺度',
+    aiFeature: '模数关系、黄金比运用',
+    quantification: '关键尺寸符合黄金比或模数(语义判断)',
+    thresholds: [],
+    semanticOnly: true,
+    bandDescriptions: {
+      优: '比例尺度精当,符合黄金比或模数体系',
+      良: '比例合理,模数意识清晰',
+      中: '比例失当,缺乏模数',
+      差: '比例失调,尺度混乱',
+    },
+    referenceExample: '扬·奇肖尔德《新版式》的比例体系',
+    source: SRC_Thuaid,
+  },
+
+  // ============ 维度三:色彩应用(20%) ============
+
+  {
+    rubricId: 'DESIGN-COLOR-CONTRAST',
+    artType: 'design',
+    dimensionKey: 'colorApplication',
+    dimensionLabel: '色彩应用',
+    dimensionWeight: 0.2,
+    subIndicator: '色彩对比度',
+    aiFeature: '前景背景明度差',
+    quantification: 'WCAG AA(≥4.5:1)达标(以平均亮度区间近似,90-180)',
+    thresholds: [{ metricKey: 'avgLuminance', op: 'between', value: [90, 180], label: '明度对比适中(WCAG AA 近似,平均亮度 90-180)' }],
+    semanticOnly: false,
+    bandDescriptions: {
+      优: '色彩对比符合 WCAG AA,信息可读性高',
+      良: '对比度达标,可读性尚可',
+      中: '对比度勉强达标或边缘',
+      差: '对比度不达标,信息难以辨识',
+    },
+    referenceExample: '包豪斯色彩教学的对比理论',
+    source: SRC_Thuaid,
+  },
+  {
+    rubricId: 'DESIGN-COLOR-HARMONY',
+    artType: 'design',
+    dimensionKey: 'colorApplication',
+    dimensionLabel: '色彩应用',
+    dimensionWeight: 0.2,
+    subIndicator: '配色和谐度',
+    aiFeature: '色相分布集中度、品牌色一致性',
+    quantification: '色彩和谐度评分≥60',
+    thresholds: [{ metricKey: 'harmonyScore', op: '>=', value: 60, label: '配色和谐统一(和谐度评分≥60)' }],
+    semanticOnly: false,
+    bandDescriptions: {
+      优: '配色和谐考究,品牌识别度强',
+      良: '配色统一,品牌色应用较好',
+      中: '配色平庸,品牌色应用一般',
+      差: '配色混乱,品牌色缺失',
+    },
+    referenceExample: '原研哉无印良品海报的克制用色',
+    source: SRC_Gome,
+  },
+  {
+    rubricId: 'DESIGN-COLOR-PSYCH',
+    artType: 'design',
+    dimensionKey: 'colorApplication',
+    dimensionLabel: '色彩应用',
+    dimensionWeight: 0.2,
+    subIndicator: '色彩心理学',
+    aiFeature: '色相与主题语义匹配',
+    quantification: '暖色-兴奋/冷色-理性匹配度(语义判断)',
+    thresholds: [],
+    semanticOnly: true,
+    bandDescriptions: {
+      优: '色彩心理学运用精准,色相与主题高度契合',
+      良: '色彩语义有所体现',
+      中: '色彩心理学模糊',
+      差: '色彩心理学误用,语义冲突',
+    },
+    referenceExample: '约翰内斯·伊登《色彩艺术》心理语义',
+    source: SRC_Gome,
+  },
+
+  // ============ 维度四:整体与创意表达(30%,吸收文档第四维) ============
+
+  {
+    rubricId: 'DESIGN-WHOLE-DENSITY',
+    artType: 'design',
+    dimensionKey: 'overall',
+    dimensionLabel: '整体与创意表达',
+    dimensionWeight: 0.3,
+    subIndicator: '信息密度与可读性',
+    aiFeature: '单帧信息密度、视觉元素总量',
+    quantification: '信息密度足以承载叙事(边缘密度≥0.08)',
+    thresholds: [{ metricKey: 'edgeDensity', op: '>=', value: 0.08, label: '信息密度适中(边缘密度≥0.08)' }],
+    semanticOnly: false,
+    bandDescriptions: {
+      优: '信息密度与可读性平衡精到,单帧叙事完整',
+      良: '信息密度尚可,叙事基本成立',
+      中: '信息过密或过疏,叙事薄弱',
+      差: '信息混乱,无叙事',
+    },
+    referenceExample: '瑞士国际主义海报的信息编排',
+    source: SRC_Thuaid,
+  },
+  {
+    rubricId: 'DESIGN-WHOLE-CREATIVE',
+    artType: 'design',
+    dimensionKey: 'overall',
+    dimensionLabel: '整体与创意表达',
+    dimensionWeight: 0.3,
+    subIndicator: '创意新颖性',
+    aiFeature: '视觉元素组合的罕见度',
+    quantification: '同类题常见手法规避率(语义判断)',
+    thresholds: [],
+    semanticOnly: true,
+    bandDescriptions: {
+      优: '创意新颖独特,有原创个人面貌',
+      良: '创意有一定新意',
+      中: '创意平庸,手法常见',
+      差: '无创意或抄袭',
+    },
+    referenceExample: '福田繁雄《反战海报》的视觉双关',
+    source: SRC_Cafa,
+  },
+  {
+    rubricId: 'DESIGN-WHOLE-NARRATIVE',
+    artType: 'design',
+    dimensionKey: 'overall',
+    dimensionLabel: '整体与创意表达',
+    dimensionWeight: 0.3,
+    subIndicator: '叙事与文化共鸣',
+    aiFeature: '概念-图像对应清晰度、文化符号引用',
+    quantification: '概念可视化与符号原生语境尊重度(语义判断)',
+    thresholds: [],
+    semanticOnly: true,
+    bandDescriptions: {
+      优: '概念转化精准深刻,文化共鸣度高',
+      良: '概念转化尚可,文化共鸣一般',
+      中: '概念转化生硬,文化符号堆砌',
+      差: '概念缺失,文化误用',
+    },
+    referenceExample: '靳埭强海报中的文化符号运用',
+    source: SRC_Cafa,
+  },
+];

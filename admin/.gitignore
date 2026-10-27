@@ -1,0 +1,12 @@
+node_modules
+dist
+build
+.umi
+.umi-production
+.umi-test
+.env
+local
+.DS_Store
+*.log
+yarn-error.log
+npm-debug.log*

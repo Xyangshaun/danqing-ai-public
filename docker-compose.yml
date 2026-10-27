@@ -1,0 +1,188 @@
+# ============================================================
+# 丹青有AI - Docker Compose 部署配置
+#
+# 固化内容:
+#   1. Redis 连接池监控(RATE_LIMIT_REDIS_TIMEOUT_MS / REDIS_METRICS_LOG_INTERVAL_MS)
+#   2. Redis 服务健康检查 + 资源限制
+#   3. App 健康检查 + 日志配置
+#   4. 网络隔离 + 持久化卷
+#   5. 并发登录压测参数固化(frontend + perf-test 服务,profile=perf)
+#      对应 scripts/concurrent-login-test.mjs,验证懒加载+超时优化在高并发下表现
+#
+# 对应文档:.trae/documents/redis-brpop-fix-2026-08-07.md
+#
+# 用法:
+#   docker compose up -d                    # 启动所有服务(不含压测)
+#   docker compose logs -f app              # 实时查看应用日志(含 redis-metrics summary)
+#   docker compose exec app curl localhost:3000/api/v1/metrics/redis  # 拉取 Redis 指标
+#
+# 持续集成压测(CI):
+#   docker compose --profile perf run --rm perf-test   # 运行并发登录压测,exit 0=达标
+#   # 压测参数(VUS/ITERS 等)已在 perf-test 服务的 environment 固化,
+#   # 可用 -e 临时覆盖,如:docker compose --profile perf run --rm -e VUS=100 perf-test
+#
+# 生产环境注意事项:
+#   - .env 文件需自行准备(含 JWT 密钥、飞书凭证、DATABASE_URL 等)
+#   - Redis 仅绑定内部网络,不对外暴露端口
+#   - 生产环境应在 Nginx 层屏蔽 /api/v1/metrics/ 端点的外网访问
+# ============================================================
+
+services:
+  # ---------- Node.js 应用 ----------
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: danqing-app
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"  # 仅绑定本地,Nginx 反代对外
+    env_file:
+      - server/.env
+    environment:
+      # ---- Redis 连接池监控(固化配置)----
+      # rate-limit Redis 操作硬超时(毫秒),超时后 fail open 放行请求
+      RATE_LIMIT_REDIS_TIMEOUT_MS: "200"
+      # Redis 指标日志输出间隔(毫秒),30s 输出一次摘要
+      REDIS_METRICS_LOG_INTERVAL_MS: "30000"
+      # Redis 连接地址(指向 compose 内的 redis 服务)
+      REDIS_URL: "redis://redis:6379"
+      # ---- 日志 ----
+      LOG_LEVEL: "info"
+      NODE_ENV: "production"
+    volumes:
+      - app-uploads:/app/server/uploads
+      - app-logs:/app/server/logs
+    networks:
+      - danqing-net
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 5s
+      start_period: 15s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: "1.5"
+        reservations:
+          memory: 512M
+
+  # ---------- Redis ----------
+  redis:
+    image: redis:7-alpine
+    container_name: danqing-redis
+    restart: unless-stopped
+    # 不暴露端口(仅内部网络可达,对应项目硬约束:DB/Cache 仅绑定 127.0.0.1)
+    # ports:
+    #   - "127.0.0.1:6379:6379"  # 调试时可取消注释
+    command: >
+      redis-server
+      --maxmemory 256mb
+      --maxmemory-policy allkeys-lru
+      --save 60 1000
+      --appendonly yes
+      --appendfsync everysec
+      --loglevel warning
+      --timeout 300
+      --tcp-keepalive 60
+    volumes:
+      - redis-data:/data
+    networks:
+      - danqing-net
+    healthcheck:
+      # Redis 健康检查:PING 返回 PONG 即健康
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      start_period: 5s
+      retries: 5
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          memory: 384M
+        reservations:
+          memory: 128M
+
+  # ---------- 前端静态服务(仅压测用)----------
+  # 后端 app 仅服务 /uploads,不服务前端 dist;压测阶段1 需拉取懒加载 chunk,
+  # 故用 nginx serve dist。前端 base=/app/,故 dist 挂到 /usr/share/nginx/html/app
+  frontend:
+    image: nginx:alpine
+    container_name: danqing-frontend-perf
+    profiles: ["perf"]  # 不随默认 up 启动,仅 CI 压测时拉起
+    restart: "no"
+    volumes:
+      - ./dist:/usr/share/nginx/html/app:ro
+    networks:
+      - danqing-net
+    healthcheck:
+      # nginx:alpine 自带 busybox wget;访问 /app/ 返回 index.html 即健康
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://localhost/app/"]
+      interval: 5s
+      timeout: 3s
+      start_period: 3s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+
+  # ---------- 并发登录压测(CI)----------
+  # 运行 scripts/concurrent-login-test.mjs,验证懒加载+超时优化在高并发下表现
+  # 参数已固化在 environment;CI 用 docker compose --profile perf run --rm perf-test 触发
+  # exit 0=三阶段全 PASS,非 0=存在 FAIL,CI 据此阻断
+  perf-test:
+    image: node:20-alpine
+    container_name: danqing-perf-test
+    profiles: ["perf"]  # 不随默认 up 启动
+    restart: "no"
+    working_dir: /app
+    volumes:
+      # 挂载项目根(scripts/ + dist/),只读;压测脚本零依赖,无需 npm install
+      - ./:/app:ro
+    environment:
+      # ===== 固化并发参数(对应 concurrent-login-test.mjs)=====
+      VUS: "50"             # 并发虚拟用户数
+      ITERS: "5"            # 每 VU 迭代轮数(总请求 = VUS × ITERS / 阶段)
+      FRONTEND_BASE: "http://frontend/app/"   # 指向 compose 内 frontend 服务
+      BACKEND_BASE: "http://app:3000"         # 指向 compose 内 app 服务
+      REDIRECT_URI: "http://localhost:5173/auth/feishu/callback"  # 飞书白名单回调
+      TIMEOUT_MS: "10000"   # 单请求超时
+    networks:
+      - danqing-net
+    depends_on:
+      app:
+        condition: service_healthy
+      frontend:
+        condition: service_healthy
+    command: ["node", "scripts/concurrent-login-test.mjs"]
+
+# ---------- 网络 ----------
+networks:
+  danqing-net:
+    driver: bridge
+    internal: false  # 需要访问外部 API(飞书 OAuth 等)
+
+# ---------- 持久化卷 ----------
+volumes:
+  redis-data:
+    driver: local
+  app-uploads:
+    driver: local
+  app-logs:
+    driver: local

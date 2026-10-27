@@ -1,0 +1,24 @@
+# 依赖
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# 环境变量(含敏感信息,不入库)
+.env
+
+# expo-router 自动生成的类型
+.expo/types/
+
+# 原生构建产物(npx expo prebuild 生成)
+ios/
+android/
+
+# 编辑器与系统
+.DS_Store
+*.log
+.idea/
+.vscode/

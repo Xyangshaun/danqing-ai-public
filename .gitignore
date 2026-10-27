@@ -1,0 +1,145 @@
+node_modules/
+dist/
+coverage/
+uploads/
+*.tsbuildinfo
+.env
+.env.local
+.env.production
+.env.*.local
+.DS_Store
+*.log
+logs/
+
+.vercel
+
+# 备份与临时文件
+.backups/
+backup/
+*.bak
+*.bak-*
+*.bak.*
+*.backup
+*.backup-*
+dist.bak*/
+dist-new.zip
+dist-*.zip
+.tmp-*
+.tmp_*
+.tmp/
+tmp-*
+tmp_*
+tmp_/
+*.tar.gz
+*.dump
+coverage_*
+.env.bak*
+
+# 生成资源(24K+ 缩略图,部署时由脚本生成,仅忽略根目录 public/ 下的图片/上传目录)
+/public/*
+# —— 例外:素材库 JSON 配置必须入库(非遗作品库/灵感嫁接核心数据)
+!/public/data/
+!/public/data/**
+# public/images/heritage 真实图不在库(体积大,走 COS/Nginx 部署),保持忽略
+
+# 审计/调试临时脚本与产物
+_audit*
+_clear_cache.sh
+_dup_samples/
+_weaknet_shots/
+_deploy_list.txt
+_deploy_stage/
+_deploy_*.sh
+prototype/
+scripts/_seed*
+scripts/_seeds*
+*.b64
+_login.json
+_admin_login.json
+_tmp/
+_test_*
+_diag*
+_m3_*
+_fix_*
+_restore_*
+_verify_*
+_weaknet_*
+check_*.sh
+diag*.sh
+diag_*.sh
+diag_*.py
+deploy-delta.sh
+verify-*.sh
+verify-*.ps1
+_tmp_*
+website/check-*.sh
+website/check-*.py
+website/extract-*.py
+website/find-*.sh
+website/verify-*.sh
+website/verify-*.ps1
+
+# Prisma 备份
+server/prisma/backup/
+server/.tmp_*
+
+# Remotion 视频模板(已 eslint ignore,不纳入版本控制)
+dq-video/
+
+# QA 开发期产物(脚本/截图/临时文件)
+qa/
+
+# 敏感信息
+账号信息.md
+*.secret.md
+*.credentials.md
+
+# 本地媒体/视频/录音/截图等大体积产物(不入库)
+video/
+scripts/output/
+scripts/recordings/
+scripts/screenshots/
+scripts/heritage-tmp/
+scripts/simhei.ttf
+server-images.txt
+*.mp4
+*.mov
+*.wav
+*.webm
+
+# 含敏感明文(测试账号密码)的调试脚本
+jwt-probe.cjs
+probe-switch.sh
+e2e-class.cjs
+
+# 本地轮次备份目录(backup-YYYYMMDD-N-*)
+backup-*/
+
+# 部署密钥本地副本(不入库)
+deploy/secrets/
+
+# 全量备份输出目录(网盘存档用)
+backup_20260828/
+
+# 生产账号文档(含明文密码,不入库)
+.trae/production-accounts.md
+
+# 演示产物与路演材料(不入库,随数据目录整体迁移)
+ppt_work/
+output/
+backups/
+决赛材料/
+小有可为-比赛材料/
+口播视频框架_*.md
+ppt_analysis.py
+ppt_analysis_v2.py
+ppt_debug.py
+server/test-output.txt
+
+# public/data 白名单下仍排除备份文件
+public/data/*.bak
+public/data/*.bak-*
+public/data/*.bak.*
+
+
+.deploy-tools/

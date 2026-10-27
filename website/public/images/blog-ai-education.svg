@@ -1,0 +1,24 @@
+<svg width="800" height="450" viewBox="0 0 800 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg1" cx="30%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#fefdfb"/>
+      <stop offset="100%" stop-color="#f3efe4"/>
+    </radialGradient>
+    <filter id="blur1"><feGaussianBlur stdDeviation="4"/></filter>
+  </defs>
+  <rect width="800" height="450" fill="url(#bg1)"/>
+  <g filter="url(#blur1)" opacity="0.14">
+    <ellipse cx="640" cy="180" rx="150" ry="110" fill="#c8392e"/>
+    <ellipse cx="700" cy="360" rx="80" ry="60" fill="#1a1a1a"/>
+  </g>
+  <path d="M 60 380 Q 200 360, 360 375" stroke="#c8392e" stroke-width="2" fill="none" opacity="0.4" stroke-linecap="round"/>
+  <g transform="translate(80, 80)">
+    <rect width="48" height="48" rx="3" fill="#c8392e"/>
+    <text x="24" y="34" text-anchor="middle" font-family="Songti SC, serif" font-size="22" font-weight="700" fill="#faf8f3">DQ</text>
+  </g>
+  <text x="80" y="200" font-family="PingFang SC, sans-serif" font-size="13" letter-spacing="3" fill="#c8392e">艺术教育</text>
+  <text x="80" y="250" font-family="Songti SC, serif" font-size="34" font-weight="600" fill="#1a1a1a">AI 如何重塑</text>
+  <text x="80" y="294" font-family="Songti SC, serif" font-size="34" font-weight="600" fill="#1a1a1a">高校艺术教育</text>
+  <line x1="80" y1="320" x2="140" y2="320" stroke="#c9a961" stroke-width="2"/>
+  <text x="80" y="360" font-family="Songti SC, serif" font-size="16" fill="#6b6b6b">从评图负担到精准诊断</text>
+</svg>

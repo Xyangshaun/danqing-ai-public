@@ -1,0 +1,48 @@
+{
+  "$schema": "k6-thresholds-v1",
+  "$comment": "丹青有AI 性能阈值配置 - 对应 Phase 1 任务 7。3 秒 SLA 为硬约束(analysis_submit.http_req_duration P95 < 3000ms)。",
+  "auth_login": {
+    "http_req_duration": ["p(95)<500", "p(99)<1000"],
+    "http_req_failed": ["rate<0.01"],
+    "iterations": ["count>100"]
+  },
+  "auth_me": {
+    "http_req_duration": ["p(95)<100", "p(99)<200"],
+    "http_req_failed": ["rate<0.01"],
+    "iterations": ["count>500"]
+  },
+  "analysis_submit": {
+    "http_req_duration": ["p(95)<3000", "p(99)<5000"],
+    "http_req_failed": ["rate<0.01"],
+    "iterations": ["count>200"]
+  },
+  "analysis_list": {
+    "http_req_duration": ["p(95)<200", "p(99)<500"],
+    "http_req_failed": ["rate<0.01"],
+    "iterations": ["count>500"]
+  },
+  "mixed": {
+    "http_req_duration": ["p(95)<2000", "p(99)<4000"],
+    "http_req_failed": ["rate<0.01"],
+    "iterations": ["count>1000"]
+  },
+  "smoke": {
+    "http_req_failed": ["rate<0.01"],
+    "checks": ["rate>0.95"]
+  },
+  "notification_list": {
+    "http_req_duration": ["p(95)<200", "p(99)<500"],
+    "http_req_failed": ["rate<0.01"],
+    "iterations": ["count>500"]
+  },
+  "history_list": {
+    "http_req_duration": ["p(95)<300", "p(99)<800"],
+    "http_req_failed": ["rate<0.01"],
+    "iterations": ["count>300"]
+  },
+  "concurrent_100": {
+    "http_req_duration": ["p(95)<2000", "p(99)<4000"],
+    "http_req_failed": ["rate<0.02"],
+    "iterations": ["count>500"]
+  }
+}

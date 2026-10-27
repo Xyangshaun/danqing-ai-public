@@ -1,0 +1,61 @@
+# ============================================================
+# 丹青有AI - 监控专用 Compose Override
+#
+# 用途:在基础 docker-compose.yml 之上,叠加生产级监控能力
+#   - redis-exporter:将 Redis 内部指标暴露为 Prometheus 格式
+#   - app metrics:通过 /api/v1/metrics/redis 暴露应用级 Redis 指标
+#
+# 启动方式:
+#   docker compose -f docker-compose.yml -f docker-compose.monitoring.yml up -d
+#
+# 指标采集:
+#   1. Redis 基础指标:http://localhost:9121/metrics (redis-exporter)
+#      - 内存使用、连接数、命令统计、慢查询、key 过期等
+#   2. 应用级 Redis 指标:http://localhost:3000/api/v1/metrics/redis
+#      - 连接状态、EVALSHA 耗时、BRPOP/RPOP 统计、限流超时/fail open 次数
+#   3. 应用日志:docker compose logs -f app | grep redis-metrics
+#      - 每 30s(REDIS_METRICS_LOG_INTERVAL_MS)输出摘要
+#
+# 对应文档:.trae/documents/redis-brpop-fix-2026-08-07.md §7
+# ============================================================
+
+services:
+  # ---------- Redis Exporter(Prometheus 兼容)----------
+  redis-exporter:
+    image: oliver006/redis_exporter:latest
+    container_name: danqing-redis-exporter
+    restart: unless-stopped
+    environment:
+      # 连接 compose 内的 redis 服务
+      REDIS_ADDR: "redis://redis:6379"
+      # 采集频率(秒)
+      REDIS_EXPORTER_SCRAPE_INTERVAL: "15"
+    ports:
+      - "127.0.0.1:9121:9121"  # Prometheus 拉取端点,仅本地可访问
+    networks:
+      - danqing-net
+    depends_on:
+      redis:
+        condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "2"
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
+
+  # ---------- 应用侧:暴露 metrics 端点给外部采集 ----------
+  app:
+    environment:
+      # 监控 override 下缩短日志间隔到 15s,便于实时观察
+      REDIS_METRICS_LOG_INTERVAL_MS: "15000"
+      # 生产环境可适当收紧超时
+      RATE_LIMIT_REDIS_TIMEOUT_MS: "200"
+    ports:
+      - "127.0.0.1:3000:3000"
+      # metrics 端点单独暴露给 Prometheus(同端口,Prometheus 配置抓取 /api/v1/metrics/redis)
